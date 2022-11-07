@@ -13,4 +13,24 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  body {
+    @apply bg-bg text-base sm:text-lg min-h-screen;
+  }
+
+  h1 {
+    @apply text-[28px] sm:text-6xl;
+  }
+
+  h2 {
+    @apply text-2xl sm:text-[44px];
+  }
+
+  h3 {
+    @apply text-xl sm:text-[32px];
+  }
+
+  h4 {
+    @apply text-lg sm:text-2xl;
+  }
 }

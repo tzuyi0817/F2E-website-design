@@ -1,8 +1,1 @@
-@import 'tailwindcss/base';
 @import './common/all.css';
-
-@layer base {
-  body {
-    @apply bg-bg text-base sm:text-lg;
-  }
-}

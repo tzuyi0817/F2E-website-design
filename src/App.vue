@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import F2eHeader from './components/F2eHeader.vue';
+import F2eHeader from '@/components/F2eHeader.vue';
 
 </script>
 

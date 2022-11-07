@@ -5,7 +5,7 @@ import { resolve } from "path";
 export default defineConfig({
   base: './',
   plugins: [
-    vue()
+    vue(),
   ],
   server: {
     port: 8080,

@@ -6,7 +6,7 @@ The F2E Website Design
 
 ## Development
 
-Clone this repository and install dependencies by running `pnpm`, Node.js version is 16.13.2, then:
+Clone this repository and install dependencies by running `pnpm`(Node.js version is 16.13.2), then:
 
 - `pnpm dev`: Run in development mode
 - `pnpm build`: Build in production mode
