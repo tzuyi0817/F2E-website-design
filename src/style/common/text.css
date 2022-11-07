@@ -1,0 +1,31 @@
+@import 'tailwindcss/components';
+
+@layer components {
+  h1 {
+    @apply text-[28px] sm:text-6xl;
+  }
+
+  h2 {
+    @apply text-2xl sm:text-[44px];
+  }
+
+  h3 {
+    @apply text-xl sm:text-[32px];
+  }
+
+  h4 {
+    @apply text-lg sm:text-2xl;
+  }
+
+  .highlight {
+    @apply text-lg sm:text-2xl text-highlight;
+  }
+
+  .highlight_dark {
+    @apply text-lg sm:text-2xl text-highlight-dark;
+  }
+
+  .highlight_tint {
+    @apply text-lg sm:text-2xl text-highlight-tint;
+  }
+}
