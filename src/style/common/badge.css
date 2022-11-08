@@ -1,0 +1,7 @@
+@import 'tailwindcss/components';
+
+@layer components {
+  .badge {
+    @apply rounded-[100px] px-5 py-1;
+  }
+}
