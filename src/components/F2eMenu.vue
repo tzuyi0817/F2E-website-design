@@ -88,7 +88,6 @@ function toggleMenu() {
     justify-center
     items-center
     mt-10
-    cursor-pointer
     hover:brightness-125;
     p {
       @apply text-secondary mt-1;
@@ -99,8 +98,7 @@ function toggleMenu() {
     absolute
     top-3
     sm:top-1/2
-    left-[155px]
-    cursor-pointer;
+    left-[155px];
   }
   &_mask {
     @apply w-full h-full fixed bg-bg/80 top-0 left-0;

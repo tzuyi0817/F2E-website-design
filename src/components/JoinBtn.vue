@@ -22,9 +22,12 @@ const emit = defineEmits(['loaded']);
 
 <style lang="postcss" scoped>
 .join_btn {
-  @apply flex flex-col items-center;
+  @apply flex flex-col items-center cursor-pointer;
   &_hand {
     @apply animate-bounce w-2/3 mt-2;
+  }
+  &_icon {
+    @apply active:content-[url(@/assets/btn/btn_join_h.png)];
   }
 }
 </style>

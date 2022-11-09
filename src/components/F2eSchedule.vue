@@ -67,6 +67,7 @@ async function setScheduleGsap(className: string) {
 
 <style lang="postcss" scoped>
 .f2e_schedule {
+  @apply min-h-[1200px];
   li {
     @apply flex flex-col sm:flex-row justify-center items-center mb-20 gap-4 text-center;
   }

@@ -15,7 +15,7 @@
   }
 
   body {
-    @apply bg-bg text-base sm:text-lg min-h-screen;
+    @apply bg-bg text-base sm:text-lg min-h-screen cursor-[url(@/assets/main/cursor.svg),auto];
   }
 
   h1 {

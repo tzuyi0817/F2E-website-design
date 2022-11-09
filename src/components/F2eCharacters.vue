@@ -6,12 +6,23 @@ import { gsap } from '@/utils/gsap';
 const characters = ref<HTMLDivElement | null>(null);
 
 async function setCharactersGsap() {
+  const options = {
+    start: 'top 100%',
+    end: 'top 1%',
+    scrub: true,
+  };
+
   const questionsTimeLine = gsap.timeline({
     scrollTrigger: {
       trigger: '.f2e_questions',
-      start: 'top 100%',
-      end: 'top 1%',
-      scrub: true,
+      ...options,
+    },
+  });
+
+  const applyTimeLine = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.f2e_apply',
+      ...options,
     },
   });
 
@@ -19,6 +30,11 @@ async function setCharactersGsap() {
     .to(characters.value, { scale: 0.5 })
     .to('.f2e_traffic', { opacity: 0 }, '<')
     .to('.f2e_characters_join', { opacity: 1, visibility: 'visible' }, '<');
+
+  applyTimeLine
+    .to(characters.value, { scale: 1 })
+    .to('.f2e_traffic', { opacity: 1 }, '<')
+    .to('.f2e_characters_join', { opacity: 0, visibility: 'hidden' }, '<');
 }
 
 onMounted(setCharactersGsap);
