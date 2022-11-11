@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useFlagStore } from '@/store';
 import TitleFrame from '@/components/TitleFrame.vue';
 import week1 from '@/assets/main/week_1.png';
 import week2 from '@/assets/main/week_2.png';
 import week3 from '@/assets/main/week_3.png';
-import { swipeUp } from '@/utils/gsap';
+import { gsap, gsapMap, swipeUp, removeTrigger } from '@/utils/gsap';
 
 const stages = ref<HTMLUListElement | null>(null);
+const { isMobile } = storeToRefs(useFlagStore());
 const stagesList = [
   {
     class: 'f2e_stage_left',
@@ -32,15 +35,80 @@ const stagesList = [
 ];
 
 async function setStageGsap(className: string) {
+  if (!isMobile.value) return;
   if (!stages.value) {
     await nextTick();
     setStageGsap(className);
     return;
   }
   const element = stages.value.getElementsByClassName(className)[0];
+  const memoAnimate = gsapMap.get(`stages_mobile`) ?? {};
+  const trigger = swipeUp(element);
 
-  swipeUp(element);
+  gsapMap.set('stages_mobile', { ...memoAnimate, [className]: trigger });
 }
+
+function setDesktopGsap() {
+  if (isMobile.value) return;
+  const trigger = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.t2e_stage',
+      pin: true,
+      end: 'bottom 100%',
+      scrub: true,
+    },
+  });
+
+  removeTrigger('stages_mobile');
+  reset();
+  gsapMap.set('stages_desktop', trigger);
+  trigger
+    .to({}, { duration: 5 })
+    .to('.f2e_stage_title', { autoAlpha: 1, duration: 2 })
+    .to({}, { duration: 2 })
+    .to('.t2e_stage_content', { yPercent: 0, duration: 5 })
+    .to('.f2e_stage_left', { autoAlpha: 1, duration: 5 }, '<')
+
+    .to('.t2e_stage_content', { yPercent: -30, duration: 5 })
+    .to('.f2e_stage_left', { autoAlpha: 0, duration: 5 }, '<')
+    .to('.f2e_stage_middle', { autoAlpha: 1, duration: 5 }, '<')
+
+    .to('.t2e_stage_content', { yPercent: -60, duration: 5 })
+    .to('.f2e_stage_middle', { autoAlpha: 0, duration: 5 }, '<')
+    .to('.f2e_stage_right', { autoAlpha: 1, duration: 5 }, '<')
+
+    .to('.t2e_stage_content', { yPercent: -90, duration: 5 })
+    .to('.f2e_stage_right', { autoAlpha: 0, duration: 5 }, '<')
+
+    .to({}, { duration: 5 })
+    .to('.t2e_stage', { autoAlpha: 0, duration: 5 })
+}
+
+function reset() {
+  const autoAlpha = isMobile.value ? 1 : 0;
+
+  gsap.set('.t2e_stage_content', { yPercent: isMobile.value ? 0 : 30 });
+  gsap.set('.f2e_stage_left', { xPercent: isMobile.value ? 0 : -20, autoAlpha });
+  gsap.set('.f2e_stage_middle', { xPercent: isMobile.value ? 0 : 20, autoAlpha });
+  gsap.set('.f2e_stage_right', { xPercent: isMobile.value ? 0 : -20, autoAlpha });
+  gsap.set('.t2e_stage', { autoAlpha: 1 });
+}
+
+watch(isMobile, (isMobile) => {
+  if (isMobile) {
+    const memoAnimate = gsapMap.get(`stages_desktop`);
+
+    memoAnimate?.scrollTrigger?.kill(true);
+    reset();
+    setStageGsap('f2e_stage_left');
+    setStageGsap('f2e_stage_middle');
+    setStageGsap('f2e_stage_right');
+  } else {
+    setDesktopGsap();
+  }
+});
+
+onMounted(setDesktopGsap);
 </script>
 
 <template>
@@ -48,6 +116,7 @@ async function setStageGsap(className: string) {
     <title-frame 
       content="年度最強合作 , 三大主題來襲"
       description="各路廠商強強聯手<br/>共同設計出接地氣的網頁互動挑戰關卡"
+      class="f2e_stage_title"
     />
 
     <ul class="t2e_stage_content" ref="stages">
@@ -57,10 +126,10 @@ async function setStageGsap(className: string) {
           alt=""
           @load="() => setStageGsap(stage.class)"
         />
-        <div class="flex flex-col justify-center items-center gap-2">
+        <div class="flex flex-col justify-center items-center gap-2 mb-11">
           <h1 class="text-highlight">{{ stage.title }}</h1>
           <h2 class="text-primary">{{ stage.description }}</h2>
-          <ul class="flex flex-col sm:flex-row gap-3 p-2 items-center">
+          <ul class="flex flex-col md:flex-row gap-3 p-2 items-center">
             <li v-for="(info, index) in stage.infos" :key="index" class="t2e_stage_info badge">
               <h4>{{ info }}</h4>
             </li>
@@ -74,11 +143,14 @@ async function setStageGsap(className: string) {
 
 <style lang="postcss" scoped>
 .t2e_stage {
-  @apply pt-20 min-h-[1610px];
+  @apply pt-20 w-full min-h-[1610px] md:min-h-[400vh] md:pt-0 overflow-hidden;
   &_content {
     @apply flex flex-col translate-y-[8%];
-    .f2e_stage_left, .f2e_stage_middle, .f2e_stage_right {
-      @apply flex flex-col sm:flex-row justify-center items-center mb-11 gap-2;
+    li {
+      @apply flex flex-col md:flex-row justify-center items-center gap-2;
+      &.f2e_stage_middle {
+        @apply md:flex-row-reverse;
+      }
       img {
         @apply w-[200px];
       } 

@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useFlagStore } from '@/store';
 import TitleFrame from '@/components/TitleFrame.vue';
 import JoinBtn from '@/components/JoinBtn.vue';
 import start from '@/assets/main/date_start.png';
 import upload from '@/assets/main/date_upload.png';
-import { swipeUp } from '@/utils/gsap';
+import { gsap, gsapMap, swipeUp, removeTrigger } from '@/utils/gsap';
 
 const schedules = ref<HTMLUListElement | null>(null);
+const { isMobile } = storeToRefs(useFlagStore());
 const schedulesList = [
   {
     class: 'f2e_schedule_left',
@@ -32,22 +35,68 @@ const schedulesList = [
 ];
 
 async function setScheduleGsap(className: string) {
+  if (!isMobile.value) return;
   if (!schedules.value) {
     await nextTick();
     setScheduleGsap(className);
     return;
   }
   const element = schedules.value.getElementsByClassName(className)[0];
+  const memoAnimate = gsapMap.get(`schedules_mobile`) ?? {};
+  const trigger = swipeUp(element);
 
-  swipeUp(element);
+  gsapMap.set('schedules_mobile', { ...memoAnimate, [className]: trigger });
 }
+
+function setDesktopGsap() {
+  if (isMobile.value) return;
+  const trigger = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.f2e_schedule',
+      pin: true,
+      end: 'bottom 100%',
+      scrub: true,
+    },
+  });
+
+  removeTrigger('schedules_mobile');
+  reset();
+  gsapMap.set('schedules_desktop', trigger);
+  trigger
+    .to({}, { duration: 5 })
+}
+
+function reset() {
+  const autoAlpha = isMobile.value ? 1 : 0;
+
+  gsap.set('.f2e_schedule', { autoAlpha: 1 });
+  gsap.set('.f2e_schedule_left', { autoAlpha });
+  gsap.set('.f2e_schedule_middle', { autoAlpha });
+  gsap.set('.f2e_schedule_right', { autoAlpha });
+}
+
+watch(isMobile, (isMobile) => {
+  if (isMobile) {
+    const memoAnimate = gsapMap.get(`schedules_desktop`);
+
+    memoAnimate?.scrollTrigger?.kill(true);
+    reset();
+    setScheduleGsap('f2e_schedule_left');
+    setScheduleGsap('f2e_schedule_middle');
+    setScheduleGsap('f2e_schedule_right');
+  } else {
+    setDesktopGsap();
+  }
+});
+
+onMounted(setDesktopGsap);
 </script>
 
 <template>
   <div class="f2e_schedule">
-    <title-frame content="重要時程" />
+    <title-frame content="重要時程" class="f2e_schedule_title" />
     
-    <ul ref="schedules" class="translate-y-[8%]">
+    <ul ref="schedules" class="f2e_schedule_content">
       <li v-for="schedule in schedulesList" :key="schedule.class" :class="schedule.class">
         <img
           v-if="schedule.src"
@@ -59,17 +108,39 @@ async function setScheduleGsap(className: string) {
         <join-btn v-else @loaded="() => setScheduleGsap(schedule.class)" />
         <h1 class="text-highlight">{{ schedule.title }}</h1>
         <h3 class="text-white bg-primary badge">{{ schedule.date }}</h3>
-        <h3 class="text-secondary-dark" v-html="schedule.description"></h3>
+        <h4 class="text-secondary-dark" v-html="schedule.description"></h4>
       </li>
     </ul>
+
+    <img class="f2e_schedule_line" src="@/assets/main/date_line.png" alt="" />
   </div>
 </template>
 
 <style lang="postcss" scoped>
 .f2e_schedule {
-  @apply min-h-[1200px];
+  @apply min-h-[1200px] w-full flex flex-col items-center;
   li {
-    @apply flex flex-col sm:flex-row justify-center items-center mb-20 gap-4 text-center;
+    @apply
+    flex 
+    flex-col 
+    justify-center 
+    items-center 
+    mb-20 
+    gap-4 
+    text-center;
+  }
+  &_content {
+    @apply
+    translate-y-[8%]
+    flex
+    flex-col
+    md:flex-row
+    justify-center
+    items-center
+    md:gap-[30vh];
+  }
+  &_line {
+    @apply hidden md:block max-w-[1440px];
   }
   :deep(.join_btn_hand) {
     @apply w-14;

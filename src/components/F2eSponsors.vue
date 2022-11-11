@@ -21,7 +21,7 @@ async function setSponsorGsap(className: string) {
   <div class="f2e_sponsors">
     <title-frame content="贊助單位" />
 
-    <ul class="flex flex-col sm:flex-row pt-28" ref="sponsors">
+    <ul class="flex flex-col md:flex-row pt-28" ref="sponsors">
       <li class="f2e_sponsors_sponsor blockStudio">
         <button class="f2e_sponsors_btn">
           <img src="@/assets/main/logo_blockstudio.png" class="f2e_sponsors_image" alt="" />

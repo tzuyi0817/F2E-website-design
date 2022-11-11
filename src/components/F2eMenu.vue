@@ -7,7 +7,7 @@ const isShowMenu = ref(false);
 const offsetMenu = computed(() => {
   return isShowMenu.value
     ? 'translate-x-0'
-    : '-translate-x-full sm:-translate-x-[calc(100%-15px)]';
+    : '-translate-x-full md:-translate-x-[calc(100%-15px)]';
 });
 const toggleBtnSrc = computed(() => isShowMenu.value ? toggleBtnClose : toggleBtnOpen);
 const toggleBtnSrc_h = computed(() => {
@@ -97,7 +97,7 @@ function toggleMenu() {
     @apply
     absolute
     top-3
-    sm:top-1/2
+    md:top-1/2
     left-[155px];
   }
   &_mask {

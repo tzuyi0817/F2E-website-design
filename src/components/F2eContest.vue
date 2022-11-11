@@ -30,7 +30,7 @@ onMounted(() => {
   <div class="f2e_contest" ref="contest">
     <title-frame content="還有比賽等著你!" />
 
-    <div class="flex flex-col sm:flex-row items-center relative h-[375px]">
+    <div class="flex flex-col md:flex-row items-center relative h-[375px]">
       <img
         ref="awardLight"
         src="@/assets/main/award_light.png"
