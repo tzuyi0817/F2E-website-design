@@ -11,6 +11,7 @@ import {
   slideInSideways,
   hide,
   removeTrigger,
+  killTrigger,
 } from '@/utils/gsap';
 
 const themes = ref<HTMLUListElement | null>(null);
@@ -83,9 +84,7 @@ function reset() {
 
 watch(isMobile, (isMobile) => {
   if (isMobile) {
-    const memoAnimate = gsapMap.get(`themes_desktop`);
-
-    memoAnimate?.scrollTrigger?.kill(true);
+    killTrigger('themes_desktop')
     reset();
     setThemeGsap('f2e_theme_left');
     setThemeGsap('f2e_theme_middle');

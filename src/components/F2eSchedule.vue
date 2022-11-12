@@ -6,7 +6,7 @@ import TitleFrame from '@/components/TitleFrame.vue';
 import JoinBtn from '@/components/JoinBtn.vue';
 import start from '@/assets/main/date_start.png';
 import upload from '@/assets/main/date_upload.png';
-import { gsap, gsapMap, swipeUp, removeTrigger } from '@/utils/gsap';
+import { gsap, gsapMap, swipeUp, removeTrigger, killTrigger } from '@/utils/gsap';
 
 const schedules = ref<HTMLUListElement | null>(null);
 const { isMobile } = storeToRefs(useFlagStore());
@@ -64,22 +64,40 @@ function setDesktopGsap() {
   gsapMap.set('schedules_desktop', trigger);
   trigger
     .to({}, { duration: 5 })
+    .to('.f2e_schedule_line', { scale: 1, duration: 5 })
+
+    .to({}, { duration: 2 })
+    .to('.f2e_schedule_left', { autoAlpha: 1, duration: 5 })
+    .to('.f2e_schedule_left .f2e_schedule_weekLine', { scale: 1, duration: 5 }, '<')
+
+    .to({}, { duration: 2 })
+    .to('.f2e_schedule_middle', { autoAlpha: 1, duration: 5 })
+    .to('.f2e_schedule_middle .f2e_schedule_weekLine', { scale: 1, duration: 5 }, '<')
+
+    .to({}, { duration: 2 })
+    .to('.f2e_schedule_right', { autoAlpha: 1, duration: 5 })
+    .to('.f2e_schedule_right .f2e_schedule_weekLine', { scale: 1, duration: 5 }, '<')
+
+    .to({}, { duration: 5 })
+    .to('.f2e_schedule', { autoAlpha: 0, duration: 5 });
 }
 
 function reset() {
   const autoAlpha = isMobile.value ? 1 : 0;
 
-  gsap.set('.f2e_schedule', { autoAlpha: 1 });
-  gsap.set('.f2e_schedule_left', { autoAlpha });
-  gsap.set('.f2e_schedule_middle', { autoAlpha });
-  gsap.set('.f2e_schedule_right', { autoAlpha });
+  gsap.set('.f2e_schedule', { autoAlpha: 1, top: 0 });
+  gsap.set('.f2e_schedule_left', { y: -40, yPercent: 0, autoAlpha });
+  gsap.set('.f2e_schedule_middle', { yPercent: 0, autoAlpha });
+  gsap.set('.f2e_schedule_right', { yPercent: 0, autoAlpha });
+  gsap.set('.f2e_schedule_left .f2e_schedule_weekLine', { scale: 0 });
+  gsap.set('.f2e_schedule_middle .f2e_schedule_weekLine', { scale: 0 });
+  gsap.set('.f2e_schedule_right .f2e_schedule_weekLine', { scale: 0 });
+  gsap.set('.f2e_schedule_line', { scale: 0 });
 }
 
 watch(isMobile, (isMobile) => {
   if (isMobile) {
-    const memoAnimate = gsapMap.get(`schedules_desktop`);
-
-    memoAnimate?.scrollTrigger?.kill(true);
+    killTrigger('schedules_desktop');
     reset();
     setScheduleGsap('f2e_schedule_left');
     setScheduleGsap('f2e_schedule_middle');
@@ -94,7 +112,7 @@ onMounted(setDesktopGsap);
 
 <template>
   <div class="f2e_schedule">
-    <title-frame content="重要時程" class="f2e_schedule_title" />
+    <title-frame content="重要時程" class="md:hidden" />
     
     <ul ref="schedules" class="f2e_schedule_content">
       <li v-for="schedule in schedulesList" :key="schedule.class" :class="schedule.class">
@@ -109,6 +127,10 @@ onMounted(setDesktopGsap);
         <h1 class="text-highlight">{{ schedule.title }}</h1>
         <h3 class="text-white bg-primary badge">{{ schedule.date }}</h3>
         <h4 class="text-secondary-dark" v-html="schedule.description"></h4>
+
+        <div class="f2e_schedule_weekLine">
+          <img class="w-8" src="@/assets/main/date_weekLine.png" alt="" />
+        </div>
       </li>
     </ul>
 
@@ -118,7 +140,7 @@ onMounted(setDesktopGsap);
 
 <style lang="postcss" scoped>
 .f2e_schedule {
-  @apply min-h-[1200px] w-full flex flex-col items-center;
+  @apply min-h-[1200px] w-full flex flex-col items-center md:min-h-[300vh];
   li {
     @apply
     flex 
@@ -126,7 +148,8 @@ onMounted(setDesktopGsap);
     justify-center 
     items-center 
     mb-20 
-    gap-4 
+    gap-4
+    relative
     text-center;
   }
   &_content {
@@ -134,13 +157,38 @@ onMounted(setDesktopGsap);
     translate-y-[8%]
     flex
     flex-col
-    md:flex-row
     justify-center
     items-center
-    md:gap-[30vh];
+    md:flex-row
+    md:pt-10
+    md:gap-44;
+  }
+  &_weekLine {
+    @apply w-8 absolute hidden md:block overflow-hidden origin-bottom;
+  }
+  &_left {
+    .f2e_schedule_weekLine {
+      @apply top-[calc(100%+30px)] h-[140px];
+    }
+  }
+  &_middle {
+    .f2e_schedule_weekLine {
+      @apply top-[calc(100%+32px)] h-[70px];
+      img {
+        @apply -translate-y-[72px];
+      }
+    }
+  }
+  &_right {
+    .f2e_schedule_weekLine {
+      @apply top-[calc(100%+30px)] h-[110px];
+      img {
+        @apply -translate-y-8;
+      }
+    }
   }
   &_line {
-    @apply hidden md:block max-w-[1440px];
+    @apply hidden md:block max-w-[1440px] mt-8;
   }
   :deep(.join_btn_hand) {
     @apply w-14;

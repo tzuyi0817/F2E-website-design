@@ -67,6 +67,12 @@ function killPinTrigger(name: string) {
   });
 }
 
+function killTrigger(name: string) {
+  const memoAnimate = gsapMap.get(name);
+  if (!memoAnimate) return;
+  memoAnimate.scrollTrigger?.kill(true);
+}
+
 export {
   gsap,
   gsapMap,
@@ -76,4 +82,5 @@ export {
   hide,
   removeTrigger,
   killPinTrigger,
+  killTrigger,
 };

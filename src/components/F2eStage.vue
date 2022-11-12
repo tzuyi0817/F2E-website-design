@@ -6,7 +6,7 @@ import TitleFrame from '@/components/TitleFrame.vue';
 import week1 from '@/assets/main/week_1.png';
 import week2 from '@/assets/main/week_2.png';
 import week3 from '@/assets/main/week_3.png';
-import { gsap, gsapMap, swipeUp, removeTrigger } from '@/utils/gsap';
+import { gsap, gsapMap, swipeUp, removeTrigger, killTrigger } from '@/utils/gsap';
 
 const stages = ref<HTMLUListElement | null>(null);
 const { isMobile } = storeToRefs(useFlagStore());
@@ -96,9 +96,7 @@ function reset() {
 
 watch(isMobile, (isMobile) => {
   if (isMobile) {
-    const memoAnimate = gsapMap.get(`stages_desktop`);
-
-    memoAnimate?.scrollTrigger?.kill(true);
+    killTrigger('stages_desktop')
     reset();
     setStageGsap('f2e_stage_left');
     setStageGsap('f2e_stage_middle');

@@ -3,7 +3,7 @@ import { ref, watch, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useFlagStore } from '@/store';
 import F2eTraffic from '@/components/F2eTraffic.vue';
-import { gsap, gsapMap } from '@/utils/gsap';
+import { gsap, gsapMap, killTrigger } from '@/utils/gsap';
 
 const participantDiv = ref<HTMLDivElement | null>(null);
 const participantGroup = ref<HTMLUListElement | null>(null);
@@ -20,9 +20,7 @@ const participants = [
 ];
 
 function setParticipantsGsap() {
-  const animate = gsapMap.get('participants_desktop');
-
-  animate?.scrollTrigger?.kill(true);
+  killTrigger('participants_desktop');
   reset();
   if (isMobile.value) return;
 

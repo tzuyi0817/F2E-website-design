@@ -10,6 +10,7 @@ import {
   hide,
   gsapMap,
   removeTrigger,
+  killTrigger,
 } from '@/utils/gsap';
 
 const questions = ref<HTMLUListElement | null>(null);
@@ -100,9 +101,7 @@ function reset() {
 
 watch(isMobile, (isMobile) => {
   if (isMobile) {
-    const memoAnimate = gsapMap.get(`questions_desktop`);
-
-    memoAnimate?.scrollTrigger?.kill(true);
+    killTrigger('questions_desktop');
     reset();
     setMobileGsap('f2e_questions_left');
     setMobileGsap('f2e_questions_middle');

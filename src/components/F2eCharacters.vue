@@ -39,6 +39,7 @@ function setDesktopAnimate(animate: Record<string, gsap.core.Timeline>) {
   const themesTimeLine = createTimeLine('.f2e_theme');
   const stagesTimeLine = createTimeLine('.t2e_stage');
   const schedulesTimeLine = createTimeLine('.f2e_schedule');
+  const bigTitleTimeLine = createTimeLine('.bigTitle');
 
   killPinTrigger('characters_mobile');
   reset();
@@ -47,6 +48,7 @@ function setDesktopAnimate(animate: Record<string, gsap.core.Timeline>) {
     themesTimeLine,
     stagesTimeLine,
     schedulesTimeLine,
+    bigTitleTimeLine,
   });
 
   questionsTimeLine.to(characters.value, { scale: 0.6 });
@@ -56,7 +58,13 @@ function setDesktopAnimate(animate: Record<string, gsap.core.Timeline>) {
     .to(characters.value, { scale: 0.5 })
     .to('.f2e_characters_ui', { scale: 0.7 }, '<');
 
-  schedulesTimeLine.to(characters.value, { scale: 0.8 });
+  schedulesTimeLine
+    .to(characters.value, { scale: 0.8 })
+    .to('.f2e_characters_ui', { scale: 0.85 }, '<');
+
+  bigTitleTimeLine
+    .to(characters.value, { scale: 1 })
+    .to('.f2e_characters_ui', { scale: 1 }, '<');
 }
 
 function createTimeLine(className: string) {
