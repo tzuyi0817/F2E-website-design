@@ -87,8 +87,8 @@ function reset() {
 
   gsap.set('.f2e_schedule', { autoAlpha: 1, top: 0 });
   gsap.set('.f2e_schedule_left', { y: -40, yPercent: 0, autoAlpha });
-  gsap.set('.f2e_schedule_middle', { yPercent: 0, autoAlpha });
-  gsap.set('.f2e_schedule_right', { yPercent: 0, autoAlpha });
+  gsap.set('.f2e_schedule_middle', { y: 0, yPercent: 0, autoAlpha });
+  gsap.set('.f2e_schedule_right', { y: 0, yPercent: 0, autoAlpha });
   gsap.set('.f2e_schedule_left .f2e_schedule_weekLine', { scale: 0 });
   gsap.set('.f2e_schedule_middle .f2e_schedule_weekLine', { scale: 0 });
   gsap.set('.f2e_schedule_right .f2e_schedule_weekLine', { scale: 0 });

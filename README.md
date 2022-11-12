@@ -2,7 +2,7 @@
 
 ## Description
 
-The F2E Website Design
+The F2E Interactive Website Design
 
 ## Development
 
@@ -28,5 +28,4 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 - tailwindcss
 - vite
 - gsap
-
-## Third Party Services
+- pina

@@ -6,6 +6,10 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['loaded']);
+
+function goJoin() {
+  window.location.href = 'https://2022.thef2e.com/signup';
+}
 </script>
 
 <template>
@@ -16,7 +20,13 @@ const emit = defineEmits(['loaded']);
       alt=""
       :class="[{ 'invisible': isHoverHand }, 'join_btn_hand']"
     />
-    <img src="@/assets/btn/btn_join.png" alt="" class="join_btn_icon" @load="emit('loaded')" />
+    <img
+      src="@/assets/btn/btn_join.png"
+      alt=""
+      class="join_btn_icon"
+      @load="emit('loaded')"
+      @click="goJoin"
+    />
     <slot></slot>
   </div>
 </template>

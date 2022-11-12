@@ -17,6 +17,7 @@ const stagesList = [
     title: 'WEEK 1',
     description: 'The F2E 活動網站設計',
     infos: ['Parallax Scrolling', '#板塊設計'],
+    link: 'https://2022.thef2e.com/news/week1',
   },
   {
     class: 'f2e_stage_middle',
@@ -24,6 +25,7 @@ const stagesList = [
     title: 'WEEK 2',
     description: '今晚 , 我想來點點簽',
     infos: ['Canvas', '#凱細行動科技'],
+    link: 'https://2022.thef2e.com/news/week2',
   },
   {
     class: 'f2e_stage_right',
@@ -31,6 +33,7 @@ const stagesList = [
     title: 'WEEK 3',
     description: 'Scrum 新手村',
     infos: ['JS draggable', '#鈦坦科技'],
+    link: 'https://2022.thef2e.com/news/week3',
   },
 ];
 
@@ -94,6 +97,10 @@ function reset() {
   gsap.set('.t2e_stage', { autoAlpha: 1 });
 }
 
+function goDetail(url: string) {
+  window.location.href = url;
+}
+
 watch(isMobile, (isMobile) => {
   if (isMobile) {
     killTrigger('stages_desktop')
@@ -132,7 +139,10 @@ onMounted(setDesktopGsap);
               <h4>{{ info }}</h4>
             </li>
           </ul>
-          <button class="badge text-white text-lg bg-secondary-dark w-fit">查看關卡細節</button>
+          <button
+            class="badge text-white text-lg bg-secondary-dark w-fit"
+            @click="goDetail(stage.link)"
+          >查看關卡細節</button>
         </div>
       </li>
     </ul>
