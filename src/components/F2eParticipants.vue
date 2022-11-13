@@ -35,30 +35,34 @@ function setParticipantsGsap() {
 
   gsapMap.set('participants_desktop', trigger);
   trigger
-    .to(leftCloud.value, { scale: 0.66, xPercent: 33, duration: 5  })
-    .to(rightCloud.value, { scale: 0.66, xPercent: -33, duration: 5  }, '<')
-    .to('.f2e_traffic_ready', { autoAlpha: 0, duration: 5  }, '<')
-    .to('.f2e_traffic_yellow', { autoAlpha: 0, duration: 5  }, '<')
-    .to('.f2e_traffic_green', { autoAlpha: 0, duration: 5  }, '<')
+    .to(leftCloud.value, { scale: 0.66, xPercent: 33, duration: 5 })
+    .to(rightCloud.value, { scale: 0.66, xPercent: -33, duration: 5 }, '<')
+    .to('.f2e_traffic_ready', { autoAlpha: 0, duration: 5 }, '<')
+    .to('.f2e_traffic_yellow', { autoAlpha: 0, duration: 5 }, '<')
+    .to('.f2e_traffic_green', { autoAlpha: 0, duration: 5 }, '<')
 
+    .to({}, { duration: 2 })
     .to(leftCloud.value, { scale: 0.33, xPercent: 66, duration: 5 })
     .to(rightCloud.value, { scale: 0.33, xPercent: -66, duration: 5  }, '<')
-    .to('.f2e_traffic_red', { autoAlpha: 0, duration: 5  }, '<')
-    .to('.f2e_traffic_yellow', { autoAlpha: 1, duration: 5  }, '<')
+    .to('.f2e_traffic_red', { autoAlpha: 0, duration: 5 }, '<')
+    .to('.f2e_traffic_yellow', { autoAlpha: 1, duration: 5 }, '<')
 
+    .to({}, { duration: 2 })
     .to(leftCloud.value, { scale: 0, xPercent: 100, duration: 5  })
     .to(rightCloud.value, { scale: 0, xPercent: -100, duration: 5  }, '<')
-    .to('.f2e_traffic_yellow', { autoAlpha: 0, duration: 5  }, '<')
-    .to('.f2e_traffic_green', { autoAlpha: 1, duration: 5  }, '<')
-    .to('.f2e_traffic_go', { autoAlpha: 1, duration: 5  }, '<')
+    .to('.f2e_traffic_yellow', { autoAlpha: 0, duration: 5 }, '<')
+    .to('.f2e_traffic_green', { autoAlpha: 1, duration: 5 }, '<')
+    .to('.f2e_traffic_go', { autoAlpha: 1, duration: 5 }, '<')
 
-    .to('.f2e_traffic', { autoAlpha: 0, duration: 5  })
-    .to(participantGroup.value, { autoAlpha: 0, duration: 5  }, '<')
+    .to({}, { duration: 2 })
+    .to('.f2e_traffic', { autoAlpha: 0, duration: 5 })
+    .to(participantGroup.value, { autoAlpha: 0, duration: 5 }, '<')
 
-    .to('.f2e_header_logo', { autoAlpha: 1, duration: 5  })
-    .to(participantTitle.value, { autoAlpha: 0, duration: 5  }, '<')
-    .to(participantLogoText.value, { autoAlpha: 0, duration: 5  }, '<')
-    .to(start.value, { autoAlpha: 0, duration: 5  }, '<');
+    .to({}, { duration: 2 })
+    .to('.f2e_header_logo', { autoAlpha: 1, duration: 5 })
+    .to(participantTitle.value, { autoAlpha: 0, duration: 5 }, '<')
+    .to(participantLogoText.value, { autoAlpha: 0, duration: 5 }, '<')
+    .to(start.value, { autoAlpha: 0, duration: 5 }, '<');
 }
 
 function reset() {

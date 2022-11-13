@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import F2eHeader from '@/components/F2eHeader.vue';
+import Loading from '@/components/Loading.vue';
 import { useFlagStore } from '@/store';
 import { debounce } from '@/utils/common';
 
@@ -13,6 +14,7 @@ window.addEventListener('resize', debounce(() => {
 </script>
 
 <template>
+  <loading />
   <f2e-header />
   <router-view />
 </template>

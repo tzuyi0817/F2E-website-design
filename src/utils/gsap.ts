@@ -1,9 +1,10 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import MotionPathPlugin from 'gsap/MotionPathPlugin';
 
 const gsapMap = new Map();
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 function swipeUp(element: Element | null) {
   if (!element) return;
@@ -49,6 +50,49 @@ function hide(element: Element) {
   gsap.set(element, { autoAlpha: 0 });
 }
 
+function createTimeLine(className: string) {
+  const options = {
+    start: 'top 100%',
+    end: 'top 1%',
+    scrub: true,
+  };
+
+  return gsap.timeline({
+    scrollTrigger: { trigger: className, ...options },
+  });
+}
+
+function moveCharacters() {
+  let currentPosition = '';
+
+  return function (event: MouseEvent) {
+    const mousePosition = event.x / window.innerWidth * 100;
+
+    switch (true) {
+      case mousePosition <= 33.3 && currentPosition !== 'left':
+        currentPosition = 'left';
+        gsap.to('.f2e_characters_f2e', { xPercent: -10 });
+        gsap.to('.f2e_characters_ui', { xPercent: 10 });
+        gsap.to('.f2e_characters_team', { xPercent: 10 });
+        break;
+      case mousePosition > 33.3 && mousePosition < 66.6 && currentPosition !== 'middle':
+        currentPosition = 'middle';
+        gsap.to('.f2e_characters_f2e', { xPercent: 0 });
+        gsap.to('.f2e_characters_ui', { xPercent: 0 });
+        gsap.to('.f2e_characters_team', { xPercent: 0 });
+        break;
+      case mousePosition > 66.6 && currentPosition !== 'right':
+        currentPosition = 'right';
+        gsap.to('.f2e_characters_f2e', { xPercent: -10 });
+        gsap.to('.f2e_characters_ui', { xPercent: -10 });
+        gsap.to('.f2e_characters_team', { xPercent: 10 });
+        break;
+      default:
+        break;
+    }
+  }
+}
+
 function removeTrigger(name: string) {
   const memoAnimate = gsapMap.get(name);
   if (!memoAnimate) return;
@@ -77,10 +121,13 @@ export {
   gsap,
   gsapMap,
   ScrollTrigger,
+  MotionPathPlugin,
   swipeUp,
   slideInSideways,
   hide,
+  createTimeLine,
   removeTrigger,
   killPinTrigger,
   killTrigger,
+  moveCharacters,
 };

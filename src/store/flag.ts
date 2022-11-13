@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 
 const defaultState = {
-  device: '',  
+  device: '',
+  isLoading: true,
 };
 
 export default defineStore('f2e_website_design_flag', {
@@ -15,5 +16,8 @@ export default defineStore('f2e_website_design_flag', {
     setInnerSize(size: number) {
       this.device = size > 768 ? 'desktop' : 'mobile';
     },
+    setLoadingFlag(isLoading: boolean) {
+      this.isLoading = isLoading;
+    } 
   },
 });

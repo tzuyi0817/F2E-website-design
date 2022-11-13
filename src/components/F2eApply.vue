@@ -6,7 +6,7 @@ import JoinBtn from '@/components/JoinBtn.vue';
 import { gsap, gsapMap, swipeUp, removeTrigger, killTrigger } from '@/utils/gsap';
 
 const apply = ref<HTMLDivElement | null>(null);
-  const { isMobile } = storeToRefs(useFlagStore());
+const { isMobile } = storeToRefs(useFlagStore());
 
 function setApplyGsap() {
   if (!isMobile.value) return;
@@ -76,7 +76,6 @@ function setDesktopGsap() {
     .to({}, { duration: 2 })
     .to('.f2e_apply_join', { yPercent: 0, autoAlpha: 1, duration: 5 }, '<')
     .to('.f2e_characters_join', { autoAlpha: 0, duration: 5 }, '<');
-
 }
 
 function reset() {
@@ -135,10 +134,10 @@ onMounted(setDesktopGsap);
 .f2e_apply {
   @apply flex w-full flex-col items-center gap-10 my-32 relative overflow-hidden md:min-h-[500vh];
   &_logo {
-    @apply w-3/5 max-w-[520px] md:mt-10;
+    @apply w-[45vh] max-w-[520px] md:mt-10;
   }
   &_join {
-    @apply w-[22%] max-w-[150px];
+    @apply w-[22%] max-w-[140px];
   }
   &_cloud {
     @apply absolute top-0 hidden -z-[1] md:block;

@@ -24,13 +24,17 @@ const toggleBtnSrc_p = computed(() => {
 function toggleMenu() {
   isShowMenu.value = !isShowMenu.value;
 }
+
+function goLink(url: string) {
+  window.location.href = url;
+}
 </script>
 
 <template>
   <div v-if="isShowMenu" class="f2e_menu_mask"></div>
   <div :class="['f2e_menu', offsetMenu]">
     <ul>
-      <li>
+      <li @click="goLink('https://2022.thef2e.com/news')">
         <img
           src="@/assets/icon/ic_menu_info.png"
           width="60"
@@ -39,7 +43,7 @@ function toggleMenu() {
         />
         <p>關卡資訊</p>
       </li>
-      <li>
+      <li @click="goLink('https://2022.thef2e.com/works')">
         <img
           src="@/assets/icon/ic_menu_list.png"
           width="60"
@@ -48,7 +52,7 @@ function toggleMenu() {
         />
         <p>作品列表</p>
       </li>
-      <li>
+      <li @click="goLink('https://hackmd.io/ofJD4K7iSI65V19zxC7d0w')">
         <img
           src="@/assets/icon/ic_menu_strategy.png"
           width="60"
@@ -57,7 +61,7 @@ function toggleMenu() {
         />
         <p>攻略資源</p>
       </li>
-      <li>
+      <li @click="goLink('https://2022.thef2e.com/jobs')">
         <img
           src="@/assets/icon/ic_menu_job.png"
           width="60"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import F2eParticipants from '@/components/F2eParticipants.vue';
 import F2eQuestions from '@/components/F2eQuestions.vue';
 import F2eCharacters from '@/components/F2eCharacters.vue';
@@ -10,10 +11,16 @@ import F2eContest from '@/components/F2eContest.vue';
 import F2eSponsors from '@/components/F2eSponsors.vue';
 import F2eApply from '@/components/F2eApply.vue';
 import F2eMap from '@/components/F2eMap.vue';
+import { useFlagStore } from '@/store';
+import { moveCharacters } from '@/utils/gsap';
+
+const move = moveCharacters();
+
+onMounted(() => useFlagStore().setLoadingFlag(false));
 </script>
 
 <template>
-  <div class="f2e_index">
+  <div class="f2e_index" @mousemove="move">
     <f2e-participants />
     <f2e-questions />
     <f2e-theme />

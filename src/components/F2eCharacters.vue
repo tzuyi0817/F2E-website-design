@@ -3,26 +3,22 @@ import { ref, watch, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useFlagStore } from '@/store';
 import JoinBtn from '@/components/JoinBtn.vue';
-import { gsap, gsapMap, killPinTrigger } from '@/utils/gsap';
+import { gsap, gsapMap, killPinTrigger, createTimeLine } from '@/utils/gsap';
 
 const characters = ref<HTMLDivElement | null>(null);
 const { isMobile } = storeToRefs(useFlagStore());
 
-async function setCharactersGsap() {
-  const animate = {
-    questionsTimeLine: createTimeLine('.f2e_questions'),
-    applyTimeLine: createTimeLine('.f2e_apply'),
-  };
-
-  isMobile.value ? setMobileAnimate(animate) : setDesktopAnimate(animate);
+function setCharactersGsap() {
+  isMobile.value ? setMobileAnimate() : setDesktopAnimate();
 }
 
-function setMobileAnimate(animate: Record<string, gsap.core.Timeline>) {
-  const { questionsTimeLine, applyTimeLine } = animate;
+function setMobileAnimate() {
+  const questionsTimeLine = createTimeLine('.f2e_questions');
+  const applyTimeLine = createTimeLine('.f2e_apply');
 
   killPinTrigger('characters_desktop');
   reset();
-  gsapMap.set('characters_mobile', animate);
+  gsapMap.set('characters_mobile', { questionsTimeLine, applyTimeLine });
   questionsTimeLine
     .to(characters.value, { scale: 0.5 })
     .to('.f2e_traffic', { autoAlpha: 0 }, '<')
@@ -34,8 +30,8 @@ function setMobileAnimate(animate: Record<string, gsap.core.Timeline>) {
     .to('.f2e_characters_join', { autoAlpha: 0 }, '<');
 }
 
-function setDesktopAnimate(animate: Record<string, gsap.core.Timeline>) {
-  const { questionsTimeLine, applyTimeLine } = animate;
+function setDesktopAnimate() {
+  const questionsTimeLine = createTimeLine('.f2e_questions');
   const themesTimeLine = createTimeLine('.f2e_theme');
   const stagesTimeLine = createTimeLine('.t2e_stage');
   const schedulesTimeLine = createTimeLine('.f2e_schedule');
@@ -46,12 +42,13 @@ function setDesktopAnimate(animate: Record<string, gsap.core.Timeline>) {
   killPinTrigger('characters_mobile');
   reset();
   gsapMap.set('characters_desktop', {
-    ...animate,
+    questionsTimeLine,
     themesTimeLine,
     stagesTimeLine,
     schedulesTimeLine,
     bigTitleTimeLine,
     contestTimeLine,
+    sponsorsTimeLine,
   });
 
   questionsTimeLine.to(characters.value, { scale: 0.6 });
@@ -76,20 +73,6 @@ function setDesktopAnimate(animate: Record<string, gsap.core.Timeline>) {
     .to(characters.value, { scale: 0.85 })
     .to('.f2e_characters_f2e', { scale: 1.1, xPercent: -10 }, '<')
     .to('.f2e_characters_team', { scale: 0.7, yPercent: 15 }, '<');
-
-  // applyTimeLine.to(characters.value, { scale: 1 });
-}
-
-function createTimeLine(className: string) {
-  const options = {
-    start: 'top 100%',
-    end: 'top 1%',
-    scrub: true,
-  };
-
-  return gsap.timeline({
-    scrollTrigger: { trigger: className, ...options },
-  });
 }
 
 function reset() {
