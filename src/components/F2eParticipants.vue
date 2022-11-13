@@ -89,7 +89,7 @@ onMounted(setParticipantsGsap);
   <div class="f2e_participants" ref="participantDiv">
     <img src="@/assets/logo/logo.png" alt="" class="f2e_participants_logo" />
     <img src="@/assets/logo/logo_text.png" alt="" class="f2e_participants_logoText" ref="participantLogoText" />
-    <h3 class="f2e_participants_title" ref="participantTitle">互動式網頁設計</h3>
+    <h3 class="f2e_participants_title badge" ref="participantTitle">互動式網頁設計</h3>
 
     <ul class="f2e_participants_group" ref="participantGroup">
       <li v-for="({ name, peoples }, index) in participants" :key="index" class="flex flex-col items-center">
@@ -143,7 +143,7 @@ onMounted(setParticipantsGsap);
     @apply flex flex-col gap-3 items-center md:flex-row md:w-[90vh] md:justify-between md:-translate-x-6;
   }
   &_title {
-    @apply bg-highlight badge text-white md:-translate-y-6;
+    @apply bg-highlight text-white md:-translate-y-6;
   }
   &_logoText {
     @apply w-[70vh] hidden md:block;
