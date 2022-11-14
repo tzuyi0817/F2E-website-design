@@ -80,6 +80,9 @@ function reset() {
     autoAlpha: isMobile.value ? 1 : 0,
   });
   gsap.set('.f2e_theme', { autoAlpha: 1 });
+  gsap.set('.f2e_theme_left', { autoAlpha: 1 });
+  gsap.set('.f2e_theme_middle', { autoAlpha: 1 });
+  gsap.set('.f2e_theme_right', { autoAlpha: 1 });
 }
 
 watch(isMobile, (isMobile) => {
